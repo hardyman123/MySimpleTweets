@@ -11,6 +11,7 @@ public class Tweet {
     public long uid; // database ID for the tweet
     public User user;
     public String createdAt;
+    public String formattedAbsoluteTime;
 
     // deserialize the JSON
     public static Tweet fromJSON(JSONObject jsonObject) throws JSONException{
@@ -21,7 +22,16 @@ public class Tweet {
         tweet.uid = jsonObject.getLong("id");
         tweet.createdAt = jsonObject.getString("created_at");
 
+
+        //tweet.formattedAbsoluteTime = TimeFormatter.getTimeStamp(tweet.createdAt);
+        tweet.formattedAbsoluteTime = TimeFormatter.getTimeDifference(tweet.createdAt);
+
+
         tweet.user = User.fromJson(jsonObject.getJSONObject("user"));
+
+
+
+
 
         return  tweet;
     }
