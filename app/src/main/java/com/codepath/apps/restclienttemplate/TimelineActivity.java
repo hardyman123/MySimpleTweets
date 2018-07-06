@@ -17,6 +17,7 @@ import com.loopj.android.http.JsonHttpResponseHandler;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.parceler.Parcels;
 
 import java.util.ArrayList;
 
@@ -131,9 +132,14 @@ public class TimelineActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(resultCode == RESULT_OK && requestCode == REQUEST_CODE){
             // Extract name value from result extras
-            String tweet = data.getExtras().getString("tweet");
+            Tweet tweet = Parcels.unwrap(data.getParcelableExtra("tweet"));
             // use the tweet to make a toast show up but DATA IS WORKING CORRECTLY!
-            Toast.makeText(this, tweet, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, tweet.body, Toast.LENGTH_SHORT).show();
+
+            tweets.add(0, tweet);
+            tweetAdapter.notifyItemInserted(0);
+            rvTweets.scrollToPosition(0);
+
         }
     }
 }
