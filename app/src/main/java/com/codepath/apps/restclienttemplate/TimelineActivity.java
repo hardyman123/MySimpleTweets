@@ -1,11 +1,16 @@
 package com.codepath.apps.restclienttemplate;
 
-import android.support.v7.app.AppCompatActivity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.Toast;
 
+import com.codepath.apps.restclienttemplate.models.ComposeActivity;
 import com.codepath.apps.restclienttemplate.models.Tweet;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
@@ -24,6 +29,7 @@ public class TimelineActivity extends AppCompatActivity {
     TweetAdapter tweetAdapter;
     ArrayList<Tweet> tweets;
     RecyclerView rvTweets;
+    private final int REQUEST_CODE = 20;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,5 +103,37 @@ public class TimelineActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.login, menu);
+        return true;
+    }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+       // return super.onOptionsItemSelected(item);
+
+        if(item.getItemId() == R.id.miCompose){
+
+            Intent i = new Intent(this, ComposeActivity.class);
+           // startActivity(i);
+            startActivityForResult(i, REQUEST_CODE);
+
+            System.out.println("working");
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(resultCode == RESULT_OK && requestCode == REQUEST_CODE){
+            // Extract name value from result extras
+            String tweet = data.getExtras().getString("tweet");
+            // use the tweet to make a toast show up but DATA IS WORKING CORRECTLY!
+            Toast.makeText(this, tweet, Toast.LENGTH_SHORT).show();
+        }
+    }
 }
